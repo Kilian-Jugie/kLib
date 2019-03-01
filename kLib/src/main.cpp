@@ -1,5 +1,6 @@
 #include <iostream>
 #include <klib.h>
+#include <tests.h>
 
 
 #define STRIFY(x) #x
@@ -9,12 +10,12 @@
 
 int main(int argc, char** argv) {
 
-	kWinProc wp{ (kLPSTR)"cmd.exe /C wsl echo `ls -l`"};
+	/*kWinProc wp{ (kLPSTR)"cmd.exe /C wsl echo `ls -l`"};
 	wp.setRedirectHandle(true);
 	wp.start(true);
 	wp.finish();
 
-	std::cout << "ok !\n";
+	std::cout << "ok !\n";*/
 
 	//system("pause");
 

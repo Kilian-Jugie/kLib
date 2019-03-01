@@ -1,5 +1,5 @@
 #pragma once
-#include "kDefines.h"
+#include <core/kDefines.h>
 #include <Windows.h>
 
 #ifndef KG_WIN

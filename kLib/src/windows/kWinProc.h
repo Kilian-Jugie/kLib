@@ -24,8 +24,9 @@ public:
 	bool start(bool bloquant = true);
 	void wait(DWORD time=INFINITE);
 	void finish();
-
-//private:
+	
+	PROCESS_INFORMATION getProcInfo() { return m_ProcInfo; }
+private:
 	kLPSTR m_Cmd;
 	STARTUPINFO m_StartInfo;
 	PROCESS_INFORMATION m_ProcInfo;

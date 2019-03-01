@@ -2,6 +2,7 @@
 #include <core/kDefines.h>
 #ifdef KG_WIN
 #include <windows/kWinProc.h>
+#include <windows/kWinWslAPI.h>
 #endif // KG_WIN
 #include <core/kArgs.h>
 #include <core/kArray.h>

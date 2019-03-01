@@ -16,3 +16,27 @@ bool testPreprocessor() {
 	static_assert(KU_THIRD(1, 2, 3) == 3, "Error on KU_THIRD");
 	return true;
 }
+
+
+#include <combaseapi.h>
+void wslExample() {
+	kWinWslAPI wslAPI;
+	if (wslAPI.isDistribRegistered(L"debian")) {
+		ULONG version, uid, varsCount;
+		WSL_DISTRIBUTION_FLAGS flags;
+		PSTR* vars = (PSTR*)malloc(sizeof(PSTR) * 256);
+		wslAPI.wslGetDistributionConfiguration(L"debian", &version, &uid, &flags, &vars, &varsCount);
+		std::cout << "Debian: version " << version << " uid " << uid << " Variables : ";
+		for (unsigned int i(0u); i < varsCount; ++i) {
+			std::cout << vars[i] << ";";
+		}
+
+		std::cout << " (" << varsCount << " variables)\n";
+
+		CoTaskMemFree(vars);
+		DWORD exit;
+		wslAPI.wslLaunchInteractive(L"debian", L"echo This distribution is installed and work !\n", FALSE, &exit);
+		std::cout << "Exited with code : " << exit << "\n";
+
+	}
+}
