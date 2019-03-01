@@ -12,19 +12,20 @@
 
 class kWinProc {
 public:
-	kWinProc(kLPSTR cmdLine, DWORD creationFlags = NULL, STARTUPINFO* startInfo=nullptr);
+	kWinProc(_In_ kLPSTR cmdLine, _In_opt_ DWORD creationFlags = NULL, _In_opt_ STARTUPINFO* startInfo=nullptr);
 	~kWinProc();
 
 	//Not working
-	void setRedirectHandle(bool redirect = false);
+	void setRedirectHandle(_In_ bool redirect = false);
 	//Not implemented
-	void setUseSize(bool useSize = false);
+	void setUseSize(_In_ bool useSize = false);
 	
-
-	bool start(bool bloquant = true);
-	void wait(DWORD time=INFINITE);
+	_Check_return_
+	bool start(_In_ bool bloquant = true);
+	void wait(_In_ DWORD time=INFINITE);
 	void finish();
 	
+	_Check_return_
 	PROCESS_INFORMATION getProcInfo() { return m_ProcInfo; }
 private:
 	kLPSTR m_Cmd;
