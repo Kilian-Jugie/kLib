@@ -1,7 +1,6 @@
 #include <iostream>
-#include "klib.h"
+#include <klib.h>
 
-#define TESTVER 1,2,3
 
 #define STRIFY(x) #x
 

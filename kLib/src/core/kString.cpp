@@ -1,4 +1,4 @@
-#include "kString.h"
+#include <core/kString.h>
 #include <cstdlib>
 
 	kString::kString(std::string str) {

@@ -1,4 +1,4 @@
-#include "kWinProc.h"
+#include <windows/kWinProc.h>
 
 kWinProc::kWinProc(kLPSTR cmdLine, DWORD creationFlags, STARTUPINFO * startInfo) : m_Cmd(cmdLine),
 m_CreFlags(creationFlags) {

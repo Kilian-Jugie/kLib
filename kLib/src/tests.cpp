@@ -1,7 +1,4 @@
-#include "kPreprocessor.h"
-#include "kArgs.h"
-#include "kString.h"
-#include "tests.h"
+#include <klib.h>
 
 #include <cassert>
 

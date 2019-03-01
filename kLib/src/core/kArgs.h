@@ -47,7 +47,7 @@
  setHelp("Take something and write something");
 */
 
-#include "kPreprocessor.h"
+#include <core/kPreprocessor.h>
 #include <vector>
 #include <string>
 #include <iostream>

@@ -1,5 +1,5 @@
 #pragma once
-#include "kType.h"
+#include <core/kType.h>
 #include <exception>
 
 

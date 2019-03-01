@@ -1,12 +1,12 @@
 #pragma once
-#include "kDefines.h"
+#include <core/kDefines.h>
 #include <string>
 
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif
 
-#include "kWindows.h"
+#include <windows/kWindows.h>
 
 #define K_VER_WPROC 1,0,0
 
