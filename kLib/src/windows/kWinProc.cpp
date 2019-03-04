@@ -1,19 +1,8 @@
 #include <windows/kWinProc.h>
 
-kWinProc::kWinProc(kLPSTR cmdLine, DWORD creationFlags, STARTUPINFO * startInfo) : m_Cmd(cmdLine),
-m_CreFlags(creationFlags) {
-	if (!startInfo) {
-		ZeroMemory(&m_StartInfo, sizeof(m_StartInfo));
-		m_StartInfo.cb = sizeof(m_StartInfo);
-	}
-	else
-		m_StartInfo = *startInfo;
-
-	ZeroMemory(&m_ProcInfo, sizeof(m_ProcInfo));
-}
-
 kWinProc::~kWinProc() {
 	finish();
+	delete[] m_Cmd;
 }
 
 void kWinProc::setRedirectHandle(bool redirect) {
@@ -28,8 +17,9 @@ void kWinProc::setUseSize(bool useSize) {
 }
 
 bool kWinProc::start(bool bloquant) {
-	bool r = CreateProcess(NULL, m_Cmd, m_CustomSecurity?&m_SecurityAttr:NULL,
-		m_CustomSecurity ? &m_SecurityAttr : NULL, FALSE, m_CreFlags, NULL, NULL, &m_StartInfo, &m_ProcInfo);
+	//bool r = CreateProcess(NULL, m_Cmd, m_CustomSecurity?&m_SecurityAttr:NULL,
+		//m_CustomSecurity ? &m_SecurityAttr : NULL, FALSE, m_CreFlags, NULL, NULL, &m_StartInfo, &m_ProcInfo);
+	bool r = CreateProcess(NULL, m_Cmd, NULL, NULL, FALSE, NULL, NULL, NULL, &m_StartInfo, &m_ProcInfo);
 	m_IsStarted = r;
 	if (r&&bloquant)
 		wait();
@@ -46,4 +36,10 @@ void kWinProc::finish() {
 		CloseHandle(m_ProcInfo.hProcess);
 		CloseHandle(m_ProcInfo.hThread);
 	}
+}
+
+int kWinProc::getReturnCode() {
+	DWORD exitCode;
+	GetExitCodeProcess(m_ProcInfo.hProcess, &exitCode);
+	return exitCode;
 }

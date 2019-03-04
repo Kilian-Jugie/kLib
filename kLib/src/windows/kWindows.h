@@ -9,9 +9,11 @@
 #ifdef UNICODE
 using kLPSTR = LPWSTR;
 using kLPCSTR = LPCWSTR;
+using kCHAR = WCHAR;
 #else
 using kLPSTR = LPSTR;
 using kLPCSTR = LPCSTR;
+using kCHAR = CHAR;
 #endif // UNICODE
 
 #define K_VER_WIN 1,0,0

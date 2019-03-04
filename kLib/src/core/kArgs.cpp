@@ -1,6 +1,15 @@
 #include <core/kArgs.h>
 
-kPassedParameter kPassedParameter::null("", "");
+#ifdef KARGS_USE_WIDE_ARGS
+#define cout std::wcout
+#define cerr std::wcerr
+#else
+#define cout std::cout
+#define cerr std::cerr
+#endif // KARGS_USE_WIDE_ARGS
+
+
+kPassedParameter kPassedParameter::null(ATX(""), ATX(""));
 
 kParameter& kParameter::setGetInput(bool in) {
 	takeInput = in;
@@ -69,22 +78,22 @@ bool kPassedParameter::operator!() const {
 }
 
 void kArgs::displayHelp(const string_t& exe) {
-	std::cout << "\n========== " << m_HelpTitle << " ===========\n\n";
-	std::cout << m_Description;
-	std::cout << exe;
-	if (takeInput) std::cout << " " << m_MainHint;
+	cout << "\n========== " << m_HelpTitle << " ===========\n\n";
+	cout << m_Description;
+	cout << exe;
+	if (takeInput) cout << " " << m_MainHint;
 	{
 		std::vector<kParameter>::const_iterator it(m_Parameters.begin()), end(m_Parameters.end());
 		for (; it != end; ++it) {
-			std::cout << " [-" << it->_getName();
-			if (it->_getTakeInput()) std::cout << " " << it->_getHint();
-			std::cout << "]";
+			cout << " [-" << it->_getName();
+			if (it->_getTakeInput()) cout << " " << it->_getHint();
+			cout << "]";
 		}
 	}
-	std::cout << "\n\nParameters:\n";
+	cout << "\n\nParameters:\n";
 	std::vector<kParameter>::const_iterator it(m_Parameters.begin()), end(m_Parameters.end());
 	for (; it != end; ++it) {
-		std::cout << "\t-" << it->_getName() << "\t\t" << it->_getHelp() << "\n";
+		cout << "\t-" << it->_getName() << "\t\t" << it->_getHelp() << "\n";
 	}
 }
 
@@ -135,7 +144,7 @@ bool kArgs::parseArgv(int argc, cargs_t** argv) {
 		if (argv[i][0] == ATX('-')) {
 			args_t name(argv[i] + 1);
 			if (!name.size()) {
-				std::cerr << "Format error: a parameter cannot have a blank name\n";
+				cerr << "Format error: a parameter cannot have a blank name\n";
 				return false;
 			}
 			if (name == ATX("help")) {
@@ -144,13 +153,13 @@ bool kArgs::parseArgv(int argc, cargs_t** argv) {
 			}
 			kParameter& param = getParameter(name);
 			if (&param.getParent() == nullptr) {
-				std::cerr << "Parameter error: parameter '" << name << "' does not exists !\n";
+				cerr << "Parameter error: parameter '" << name << "' does not exists !\n";
 				return false;
 			}
 			string_t content = TX("");
 			if (param._getTakeInput()) {
 				if (i == (argc - 1)) {
-					std::cerr << "Format error: parameter '" << name << "' need an additionnal input\n";
+					cerr << "Format error: parameter '" << name << "' need an additionnal input\n";
 					return false;
 				}
 				++i;
@@ -163,12 +172,12 @@ bool kArgs::parseArgv(int argc, cargs_t** argv) {
 			takeInput = false;
 		}
 		else if (!takeInput) { //-V547
-			std::cerr << "Format error: a parameter require a '-' before his name (on '" << argv[i] << "')\n";
+			cerr << "Format error: a parameter require a '-' before his name (on '" << argv[i] << "')\n";
 			return false;
 		}
 	}
 	if (takeInput&&m_MainContent.empty()) {
-		std::cerr << "Format error: the command need a general input !\n";
+		cerr << "Format error: the command need a general input !\n";
 		return false;
 	}
 	return true;

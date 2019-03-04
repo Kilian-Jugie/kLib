@@ -59,6 +59,9 @@ public:
 	virtual inline void copyFrom(const _Ty *arr, size_t size) = 0;
 };
 
+/*
+	Not created to be directly used : use kSimpleArray instead
+*/
 template <typename _Ty> class kSimpleContainer : public _kContainer<_Ty> {
 	_Ty *m_Data;
 	size_t m_Size;
@@ -84,6 +87,7 @@ public:
 	_Check_return_ inline _Ty *data() override { return m_Data; }
 };
 
+//Not working correctly (is it really needed ?)
 template <typename _Ty, size_t _maxSSize = 64, size_t _maxSCount = 32768>
 class kSegmentedContainer : public _kContainer<_Ty> {
 	_Ty **m_Data;
@@ -177,7 +181,6 @@ void kSimpleContainer<_Ty>::copyFrom(_In_ const _Ty *arr, _In_ size_t size) {
 	kLib::_copy_unchecked(m_Data, arr, size);
 }
 
-//_k_an_kd_wwa("use of opt or not for size param")
 template <typename _Ty>
 kSimpleContainer<_Ty>::kSimpleContainer(_In_ const _Ty *data,
 	_In_opt_ size_t size) {
@@ -213,7 +216,7 @@ template <typename _Ty> kSimpleContainer<_Ty> &kSimpleContainer<_Ty>::free() {
 	return *this;
 }
 
-_k_an_kd_iwa("use of opt or not for newsize param") template <typename _Ty>
+template <typename _Ty>
 kSimpleContainer<_Ty> &kSimpleContainer<_Ty>::realloc(_In_opt_ size_t newsize) {
 	_Ty *cp = new _Ty[m_Size];
 	kLib::_copy_unchecked(cp, m_Data, m_Size);
@@ -307,7 +310,9 @@ public:
 		return size < this->size() ? size : this->size();
 	}
 
-	virtual _kArray &push_back(const _Ty &_elem) = 0;
+	virtual _kArray &push_back(_In_ const _Ty &_elem) = 0;
+	virtual _kArray& operator=(_In_ std::initializer_list<_Ty>) = 0;
+	
 
 	_Check_return_ size_t size() const { return m_Data->size(); }
 
@@ -336,11 +341,17 @@ public:
 		return *this;
 	}
 
-	virtual kSimpleArray &push_back(_In_ const _Ty &elem) {
+	virtual kSimpleArray &push_back(_In_ const _Ty &elem) override {
 		this->m_Data->realloc(this->size() + 1);
 		this->m_Data->data()[this->size() - 1] = elem;
 		return *this;
 	}
+	virtual kSimpleArray& operator=(_In_ std::initializer_list<_Ty> i) override {
+		this->m_Data->realloc(i.size());
+		this->m_Data->copyFrom(i.begin(), i.size());
+		return *this;
+	}
+
 };
 
 template <typename _Ty>

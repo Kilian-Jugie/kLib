@@ -52,6 +52,15 @@
 #include <string>
 #include <iostream>
 
+#ifdef UNICODE
+using string_t = std::wstring;
+#define TX(x) L##x
+#define KARGS_USE_WIDE_ARGS
+#else
+using string_t = std::string;
+#define TX(x) x
+#endif // UNICODE
+
 #ifndef KARGS_USE_WIDE_ARGS
 using args_t = std::string;
 using cargs_t = char;
@@ -61,14 +70,6 @@ using args_t = std::wstring;
 using cargs_t = wchar_t;
 #define ATX(x) L##x
 #endif // !KARGS_USE_WIDE_ARGS
-
-#ifdef UNICODE
-using string_t = std::wstring;
-#define TX(x) L##x
-#else
-using string_t = std::string;
-#define TX(x) x
-#endif // UNICODE
 
 #define K_VER_ARGS 1,0,1
 
@@ -80,7 +81,7 @@ class kParameter {
 	kArgs* m_Parent;
 	bool takeInput;
 public:
-	kParameter(const args_t& name, kArgs* parent) : m_Name(name), m_Parent(parent), m_Help("No help given"), m_Hint("input") {}
+	kParameter(const args_t& name, kArgs* parent) : m_Name(name), m_Parent(parent), m_Help(ATX("No help given")), m_Hint(ATX("input")) {}
 
 	kParameter& setGetInput(bool in);
 	kParameter& setHelp(const string_t& help);
@@ -130,7 +131,7 @@ class kArgs {
 
 public:
 
-	kArgs() : nullParam{ ATX("ERRORED"), nullptr }, m_HelpTitle("KLIB GENERATED HELP"), m_MainHint("Input"), m_Description() {}
+	kArgs() : nullParam{ ATX("ERRORED"), nullptr }, m_HelpTitle(ATX("KLIB GENERATED HELP")), m_MainHint(ATX("Input")), m_Description() {}
 
 	kArgs& setGetInput(bool in);
 	kArgs& setHelpTitle(const string_t& title);
@@ -144,3 +145,6 @@ public:
 	bool parseArgv(int argc, cargs_t** argv);
 
 };
+
+#undef cout
+#undef cerr

@@ -2,13 +2,15 @@
 #include <klib.h>
 #include <tests.h>
 
-
-#define STRIFY(x) #x
-
 #ifndef RELEASE
 
 
 int main(int argc, char** argv) {
+
+	kSimpleArray<int> arr;
+	arr = { 5,3,6,4,7,8,9,5 };
+
+	std::cout << arr << "\n";
 
 	/*kWinProc wp{ (kLPSTR)"cmd.exe /C wsl echo `ls -l`"};
 	wp.setRedirectHandle(true);
